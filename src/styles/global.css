@@ -20,4 +20,19 @@
     @apply inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white backdrop-blur transition hover:bg-white/20 sm:w-auto;
   }
   .card { @apply rounded-2xl border border-asphalt-200 bg-white p-5 shadow-sm sm:p-6; }
+
+  /* Tall mobile hero so Stream isn't crushed under copy; desktop keeps native aspect. */
+  .hero-stream {
+    min-height: min(78svh, 640px);
+  }
+  @media (min-width: 640px) {
+    .hero-stream {
+      min-height: 0;
+      aspect-ratio: 810 / 440;
+    }
+  }
+  .hero-stream__media {
+    /* Avoid mobile Safari paint glitches with absolute Stream iframes */
+    transform: translateZ(0);
+  }
 }
