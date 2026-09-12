@@ -21,8 +21,8 @@
   }
   .card { @apply rounded-2xl border border-asphalt-200 bg-white p-5 shadow-sm sm:p-6; }
 
-  /* Native Stream aspect on all breakpoints — no letterbox, no crush under copy. */
+  /* Match Stream source (882×480) so object-cover fills edge-to-edge. */
   .hero-stream {
-    aspect-ratio: 810 / 440;
+    aspect-ratio: 882 / 480;
   }
 }

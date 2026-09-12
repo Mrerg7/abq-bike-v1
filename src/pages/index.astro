@@ -3,8 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const STREAM_SRC =
-  'https://customer-wa9cpywo3l4jte5c.cloudflarestream.com/5298e47fe095218385a5388f34ac5763/iframe?muted=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-wa9cpywo3l4jte5c.cloudflarestream.com%2F5298e47fe095218385a5388f34ac5763%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false&letterboxColor=transparent';
+const STREAM_CUSTOMER = 'customer-wa9cpywo3l4jte5c';
+const STREAM_UID = '5298e47fe095218385a5388f34ac5763';
+const STREAM_POSTER = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_UID}/thumbnails/thumbnail.jpg?time=&height=600`;
+const STREAM_HLS = `https://${STREAM_CUSTOMER}.cloudflarestream.com/${STREAM_UID}/manifest/video.m3u8`;
 ---
 
 <Layout>
@@ -13,17 +15,31 @@ const STREAM_SRC =
   <main class="flex-1">
     <section class="relative overflow-hidden bg-asphalt-950">
       {/*
-        Mobile: Stream at native aspect (unobscured), copy sits below.
-        Desktop: cinematic overlay on the same aspect frame.
+        Cover-fit Stream via <video> (not iframe) so mobile never letterboxes
+        or collapses the player. Poster paints immediately; HLS plays on top.
+        Mobile copy sits below; desktop keeps cinematic overlay.
       */}
-      <div class="hero-stream relative w-full overflow-hidden">
-        <iframe
-          src={STREAM_SRC}
-          title="ABQ.Bike hero video"
-          class="absolute inset-0 h-full w-full border-0"
-          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-          allowfullscreen="true"
-        ></iframe>
+      <div class="hero-stream relative w-full overflow-hidden bg-asphalt-950">
+        <img
+          src={STREAM_POSTER}
+          alt=""
+          width="882"
+          height="480"
+          decoding="async"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <video
+          id="hero-stream-video"
+          class="absolute inset-0 h-full w-full object-cover"
+          poster={STREAM_POSTER}
+          muted
+          loop
+          playsinline
+          autoplay
+          preload="metadata"
+          aria-label="ABQ.Bike hero video"
+        ></video>
         <div
           class="pointer-events-none absolute inset-0 z-[1] hidden bg-gradient-to-t from-asphalt-950 via-asphalt-950/45 to-asphalt-950/10 sm:block"
           aria-hidden="true"
@@ -62,6 +78,34 @@ const STREAM_SRC =
         </div>
       </div>
     </section>
+
+    <script define:vars={{ STREAM_HLS }}>
+      const video = document.getElementById('hero-stream-video');
+      if (video) {
+        const tryPlay = () => {
+          video.play().catch(() => {});
+        };
+        if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = STREAM_HLS;
+          video.addEventListener('loadeddata', tryPlay, { once: true });
+        } else {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';
+          script.async = true;
+          script.onload = () => {
+            // @ts-expect-error Hls from CDN
+            const Hls = window.Hls;
+            if (Hls?.isSupported()) {
+              const hls = new Hls({ enableWorker: true });
+              hls.loadSource(STREAM_HLS);
+              hls.attachMedia(video);
+              hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
+            }
+          };
+          document.head.appendChild(script);
+        }
+      }
+    </script>
 
     <section id="ride" class="section-padding bg-white">
       <div class="container-narrow">
