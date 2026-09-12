@@ -1,0 +1,61 @@
+---
+---
+
+<header class="sticky top-0 z-50 border-b border-asphalt-200/80 bg-asphalt-50/90 backdrop-blur-md">
+  <div class="container-narrow">
+    <div class="flex h-14 items-center justify-between sm:h-16">
+      <a href="/" class="flex items-center gap-2" aria-label="ABQ.Bike home">
+        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-asphalt-950 text-trail-400 sm:h-9 sm:w-9">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <circle cx="6.5" cy="16.5" r="3" />
+            <circle cx="17.5" cy="16.5" r="3" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.5 16.5h4L13 9h3" />
+          </svg>
+        </span>
+        <span class="leading-tight">
+          <span class="font-display text-xl font-semibold tracking-wide text-asphalt-950">ABQ</span>
+          <span class="ml-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-trail-600 sm:text-xs">Bike</span>
+        </span>
+      </a>
+
+      <nav class="hidden items-center gap-6 md:flex" aria-label="Main navigation">
+        <a href="#ride" class="text-sm font-medium text-asphalt-700 hover:text-trail-600">Ride</a>
+        <a href="#place" class="text-sm font-medium text-asphalt-700 hover:text-trail-600">The City</a>
+        <a href="#brand" class="text-sm font-medium text-asphalt-700 hover:text-trail-600">The Domain</a>
+        <a href="#acquisition" class="rounded-full bg-trail-500 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-trail-400">Domain Inquiry</a>
+      </nav>
+
+      <button type="button" id="mobile-menu-btn" class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-asphalt-800 hover:bg-asphalt-100 md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-asphalt-200 bg-asphalt-50 md:hidden">
+    <div class="container-narrow space-y-1 py-3">
+      <a href="#ride" class="block rounded-lg px-3 py-3 text-base font-medium text-asphalt-900">Ride</a>
+      <a href="#place" class="block rounded-lg px-3 py-3 text-base font-medium text-asphalt-900">The City</a>
+      <a href="#brand" class="block rounded-lg px-3 py-3 text-base font-medium text-asphalt-900">The Domain</a>
+      <a href="#acquisition" class="mt-2 block rounded-full bg-trail-500 px-4 py-3 text-center text-sm font-semibold text-white">Domain Inquiry</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      const isOpen = menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', (!isOpen).toString());
+    });
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+</script>
