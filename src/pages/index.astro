@@ -12,35 +12,53 @@ const STREAM_SRC =
 
   <main class="flex-1">
     <section class="relative overflow-hidden bg-asphalt-950">
-      {/* Mobile: tall full-bleed frame so Stream stays visible. Desktop: native aspect. */}
-      <div class="hero-stream relative w-full">
+      {/*
+        Mobile: Stream at native aspect (unobscured), copy sits below.
+        Desktop: cinematic overlay on the same aspect frame.
+      */}
+      <div class="hero-stream relative w-full overflow-hidden">
         <iframe
           src={STREAM_SRC}
           title="ABQ.Bike hero video"
-          class="hero-stream__media absolute inset-0 h-full w-full border-0"
+          class="absolute inset-0 h-full w-full border-0"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
           allowfullscreen="true"
         ></iframe>
         <div
-          class="pointer-events-none absolute inset-0 bg-gradient-to-t from-asphalt-950 via-asphalt-950/35 to-transparent sm:via-asphalt-950/50 sm:to-asphalt-950/15"
+          class="pointer-events-none absolute inset-0 z-[1] hidden bg-gradient-to-t from-asphalt-950 via-asphalt-950/45 to-asphalt-950/10 sm:block"
           aria-hidden="true"
         ></div>
-        <div class="absolute inset-x-0 bottom-0 z-10">
-          <div class="container-narrow w-full pb-5 pt-10 sm:pb-10 sm:pt-20">
-            <p class="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-trail-300 sm:mb-3 sm:text-xs">
+        <div class="absolute inset-x-0 bottom-0 z-10 hidden sm:block">
+          <div class="container-narrow w-full pb-10 pt-20">
+            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-trail-300">
               Albuquerque · Shop · Trail · Service · Rent
             </p>
-            <h1 class="font-display text-4xl font-semibold uppercase leading-none tracking-wide text-white sm:text-6xl lg:text-7xl">
+            <h1 class="font-display text-6xl font-semibold uppercase leading-none tracking-wide text-white lg:text-7xl">
               ABQ<span class="text-trail-400">.Bike</span>
             </h1>
-            <p class="mt-2.5 max-w-xl text-sm leading-relaxed text-asphalt-100/90 sm:mt-5 sm:text-lg">
+            <p class="mt-5 max-w-xl text-lg leading-relaxed text-asphalt-100/90">
               A short domain for bike shops, rentals, and ride brands in the high desert.
             </p>
-            <div class="mt-4 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
-              <a href="#ride" class="btn-primary pointer-events-auto">See the Fit</a>
-              <a href="#acquisition" class="btn-secondary pointer-events-auto">Domain Available</a>
+            <div class="mt-8 flex flex-row gap-3">
+              <a href="#ride" class="btn-primary pointer-events-auto sm:w-auto">See the Fit</a>
+              <a href="#acquisition" class="btn-secondary pointer-events-auto sm:w-auto">Domain Available</a>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="bg-asphalt-950 px-4 pb-8 pt-6 sm:hidden">
+        <p class="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-trail-300">
+          Albuquerque · Shop · Trail · Service · Rent
+        </p>
+        <h1 class="font-display text-4xl font-semibold uppercase leading-none tracking-wide text-white">
+          ABQ<span class="text-trail-400">.Bike</span>
+        </h1>
+        <p class="mt-2.5 max-w-xl text-sm leading-relaxed text-asphalt-100/90">
+          A short domain for bike shops, rentals, and ride brands in the high desert.
+        </p>
+        <div class="mt-4 flex flex-col gap-2">
+          <a href="#ride" class="btn-primary">See the Fit</a>
+          <a href="#acquisition" class="btn-secondary">Domain Available</a>
         </div>
       </div>
     </section>
